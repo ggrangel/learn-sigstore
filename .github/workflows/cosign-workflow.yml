@@ -24,6 +24,7 @@ jobs:
         run: |
           docker build -t ggrangel/learn-sigstore_ch2:latest .
           echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
+          cat cosign.key
           ./cosign sign --key cosign.key ggrangel/learn-sigstore_ch2:latest
           docker push ggrangel/learn-sigstore_ch2:latest
       - name: Verify Image Signature
