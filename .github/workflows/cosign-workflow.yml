@@ -23,10 +23,10 @@ jobs:
       - name: Build and Sign the Image
         run: |
           docker build -t ggrangel/learn-sigstore_ch2:latest .
-          echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
-          cat cosign.key
-          ./cosign sign --key cosign.key ggrangel/learn-sigstore_ch2:latest
+          ./cosign sign --yes --key env://COSIGN_PRIVATE_KEY ggrangel/learn-sigstore_ch2:latest
           docker push ggrangel/learn-sigstore_ch2:latest
+        env: 
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
       - name: Verify Image Signature
         run: |
           ./cosign verify --key env://${{ secrets.COSIGN_PUBLIC_KEY }} ggrangel/learn-sigstore_ch2:latest
