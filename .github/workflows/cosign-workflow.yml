@@ -22,11 +22,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and Sign the Image
         run: |
-          docker build -t "$IMAGE_NAME" .
-          ./cosign sign -key <(echo "${{ secrets.COSIGN_PRIVATE_KEY }}") "$IMAGE_NAME"
+          docker build -t ggrangel/learn-sigstore_ch2:latest .
+          ./cosign sign --key env://${{ secrets.COSIGN_PRIVATE_KEY }} ggrangel/learn-sigstore_ch2:latest
           docker push "$IMAGE_NAME"
       - name: Verify Image Signature
         run: |
-          ./cosign verify -key <(echo "${{ secrets.COSIGN_PUBLIC_KEY }}") "$IMAGE_NAME"
+          ./cosign verify --key env://${{ secrets.COSIGN_PUBLIC_KEY }} ggrangel/learn-sigstore_ch2:latest
 
     
