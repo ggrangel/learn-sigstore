@@ -23,9 +23,10 @@ jobs:
       - name: Build and Sign the Image
         run: |
           docker build -t "$IMAGE_NAME" .
-          ./cosign sign -key ${{ secrets.COSIGN_PRIVATE_KEY}} "$IMAGE_NAME"
+          ./cosign sign --key env://${{ secrets.COSIGN_PRIVATE_KEY}} "$IMAGE_NAME"
           docker push "$IMAGE_NAME"
       - name: Verify Image Signature
-        run: ./cosign veirfy --key ${{ secrets.COSIGN_PUBLIC_KEY}} "$IMAGE_NAME"
+        run: |
+          ./cosign verify --key env://${{ secrets.COSIGN_PUBLIC_KEY}} "$IMAGE_NAME"
 
     
